@@ -1,43 +1,53 @@
+const API = "https://billing-app-pos.onrender.com";
+
 async function loadBills() {
-  const res = await fetch('http://localhost:3000/api/bills');
-  const bills = await res.json();
+  try {
+    const res = await fetch(`${API}/api/bills`);
+    const bills = await res.json();
 
-  const container = document.getElementById('billList');
-  container.innerHTML = "";
+    console.log("Bills from API:", bills); // DEBUG
 
-  bills.forEach((bill, index) => {
-    const div = document.createElement('div');
-    div.classList.add('bill-card');
+    const container = document.getElementById("billsContainer");
 
-    div.innerHTML = `
-      <h3>Bill #${index + 1}</h3>
-      <p>Date: ${new Date(bill.createdAt).toLocaleString()}</p>
-      <p>Total: ₹${bill.totalAmount}</p>
-      <button onclick="viewBill(${index})">View</button>
-    `;
+    if (!container) {
+      console.error("❌ billsContainer not found");
+      return;
+    }
 
-    container.appendChild(div);
-  });
+    container.innerHTML = "";
 
-  window.allBills = bills;
+    if (bills.length === 0) {
+      container.innerHTML = "<p>No bills found</p>";
+      return;
+    }
+
+    bills.forEach((bill, index) => {
+      const div = document.createElement("div");
+      div.style.border = "1px solid #ccc";
+      div.style.margin = "10px";
+      div.style.padding = "10px";
+
+      let itemsHTML = "";
+
+      bill.items.forEach(item => {
+        itemsHTML += `
+          <li>${item.name} - ₹${item.price} x ${item.quantity}</li>
+        `;
+      });
+
+      div.innerHTML = `
+        <h3>Bill #${index + 1}</h3>
+        <ul>${itemsHTML}</ul>
+        <strong>Total: ₹${bill.totalAmount}</strong>
+      `;
+
+      container.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("Error loading bills:", err);
+  }
 }
 
-function viewBill(index) {
-  const bill = window.allBills[index];
-
-  let details = "Items:\n";
-
-  bill.items.forEach(item => {
-    details += `${item.name} x ${item.quantity} = ₹${item.price * item.quantity}\n`;
-  });
-
-  details += `\nTotal: ₹${bill.totalAmount}`;
-
-  alert(details);
-}
-
-function goBack() {
-  window.location.href = "index.html";
-}
-
-loadBills();
+// 🔥 IMPORTANT
+window.onload = loadBills;
