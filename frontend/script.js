@@ -75,12 +75,12 @@ function addItem() {
   if (existing) {
     existing.quantity += quantity;
   } else {
-    cart.push({
-      productId: selectedProduct._id,
-      name: selectedProduct.name,
-      price: selectedProduct.price,
-      quantity
-    });
+    billItems.push({
+  _id: selectedProduct._id, // 🔥 REQUIRED
+  name: selectedProduct.name,
+  price: selectedProduct.price,
+  quantity: quantity
+});
   }
 
   selectedProduct = null;
@@ -247,11 +247,13 @@ function removeItem(index) {
 }
 
 async function saveBill() {
+  console.log("Bill items:", billItems);
+
   const formattedItems = billItems.map(item => ({
-    productId: item._id, // IMPORTANT
+    productId: item._id,
     quantity: item.quantity
   }));
-console.log("Bill items:", billItems);
+
   const res = await fetch(`${API}/api/bills`, {
     method: "POST",
     headers: {
@@ -263,7 +265,7 @@ console.log("Bill items:", billItems);
   });
 
   const data = await res.json();
-  console.log("Bill response:", data);
+  console.log("Response:", data);
 
   alert("Bill saved!");
 }
