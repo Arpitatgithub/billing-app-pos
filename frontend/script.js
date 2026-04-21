@@ -247,23 +247,25 @@ function removeItem(index) {
 }
 
 async function saveBill() {
-  const items = cart.map(item => ({
-    productId: item.productId,
+  const formattedItems = billItems.map(item => ({
+    productId: item._id, // IMPORTANT
     quantity: item.quantity
   }));
 
-  await fetch('https://billing-app-pos.onrender.com/api/products', {
-    method: 'POST',
+  const res = await fetch(`${API}/api/bills`, {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ items })
+    body: JSON.stringify({
+      items: formattedItems
+    })
   });
 
-  alert("Bill saved");
+  const data = await res.json();
+  console.log("Bill response:", data);
 
-  cart = [];
-  renderBill();
+  alert("Bill saved!");
 }
 
 loadProducts();
