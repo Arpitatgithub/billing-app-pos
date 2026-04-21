@@ -17,6 +17,10 @@ async function loadProducts() {
   });
 }
 
+setInterval(() => {
+  loadProducts();
+}, 5000); // refresh every 5 seconds
+
 
 function searchProduct() {
   const query = document.getElementById('search').value.toLowerCase();
