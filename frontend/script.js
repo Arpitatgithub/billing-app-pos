@@ -70,17 +70,23 @@ function addItem() {
     return;
   }
 
+  if (!quantity || quantity <= 0) {
+    alert("Enter valid quantity");
+    return;
+  }
+
   const existing = cart.find(item => item.productId === selectedProduct._id);
 
   if (existing) {
     existing.quantity += quantity;
   } else {
-    billItems.push({
-  _id: selectedProduct._id, // 🔥 REQUIRED
-  name: selectedProduct.name,
-  price: selectedProduct.price,
-  quantity: quantity
-});
+    cart.push({
+      _id: selectedProduct._id,
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      quantity: quantity
+    });
   }
 
   selectedProduct = null;
@@ -247,10 +253,15 @@ function removeItem(index) {
 }
 
 async function saveBill() {
-  console.log("Bill items:", billItems);
+  if (cart.length === 0) {
+    alert("No items in bill");
+    return;
+  }
 
-  const formattedItems = billItems.map(item => ({
-    productId: item._id,
+  console.log("Cart:", cart);
+
+  const formattedItems = cart.map(item => ({
+    productId: item.productId,
     quantity: item.quantity
   }));
 
@@ -267,7 +278,7 @@ async function saveBill() {
   const data = await res.json();
   console.log("Response:", data);
 
-  alert("Bill saved!");
+  alert("Bill saved successfully");
 }
 
 loadProducts();
