@@ -240,7 +240,7 @@ async function saveBill() {
     quantity: item.quantity
   }));
 
-  await fetch('http://localhost:3000/api/bills', {
+  await fetch('https://billing-app-pos.onrender.com/api/products', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
