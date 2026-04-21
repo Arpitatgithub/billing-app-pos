@@ -1,3 +1,4 @@
+const API = "https://billing-app-pos.onrender.com";
 let selectedProduct = null;
 let products = [];
 let cart = [];
