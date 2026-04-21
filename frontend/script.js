@@ -4,10 +4,13 @@ let cart = [];
 
 // Load products
 async function loadProducts() {
-  const res = await fetch('http://localhost:3000/api/products');
+  const res = await fetch(`${API}/api/products`);
   products = await res.json();
 
+  console.log("Updated products:", products);
+
   const dropdown = document.getElementById('productList');
+  dropdown.innerHTML = ""; // 🔥 VERY IMPORTANT
 
   products.forEach(p => {
     let option = document.createElement('option');
@@ -16,6 +19,10 @@ async function loadProducts() {
     dropdown.appendChild(option);
   });
 }
+
+window.onload = () => {
+  loadProducts();
+};
 
 setInterval(() => {
   loadProducts();
