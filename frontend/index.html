@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>POS Billing</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="pos-container">
+
+  <!-- LEFT: PRODUCT SECTION -->
+  <div class="left-panel">
+  <h2>Select Product</h2>
+
+ <input 
+  type="text" 
+  id="search" 
+  placeholder="Search product..." 
+  onkeyup="searchProduct()" 
+  onfocus="showAllProducts()"
+/>
+
+<div id="searchResults" class="search-results"></div>
+
+  <input type="number" id="quantity" placeholder="Quantity">
+
+  <button onclick="addItem()">Add Item</button>
+</div>
+  <!-- RIGHT: BILL SECTION -->
+  <div class="right-panel">
+    <h2>Current Bill</h2>
+
+    <div class="bill-list" id="billItems"></div>
+
+    <div class="total-box">
+      <h3>Total: ₹<span id="total">0</span></h3>
+    </div>
+
+    <button class="save-btn" onclick="saveBill()">Save Bill</button>
+    <button class="print-btn" onclick="printInvoice()">Print Invoice</button>
+    <button onclick="window.location.href='bills.html'">View Bills</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
