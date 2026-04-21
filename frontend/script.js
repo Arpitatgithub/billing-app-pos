@@ -251,7 +251,7 @@ async function saveBill() {
     productId: item._id, // IMPORTANT
     quantity: item.quantity
   }));
-
+console.log("Bill items:", billItems);
   const res = await fetch(`${API}/api/bills`, {
     method: "POST",
     headers: {
